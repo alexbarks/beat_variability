@@ -1,16 +1,16 @@
 
 ## 20171114 Meeting notes (AJB, HH, KC, HB, LM)
 
-PURPOSE: determine the error probability of filling kspace with an anomalous beat during ECG-gated 2D PCMRI
+**PURPOSE**: determine the error or probability of filling central kspace with an anomalous beat during ECG-gated 2D PCMRI
 
-NOTES/ACTION ITEMS:
+**NOTES/ACTION ITEMS:**
 
 - [ ] peform lit review (20171201 update: ongoing)
 	* @curatv: center kspace issues (start with Markl 2001 and do a forward lit search)
 	* @alexbarks: variability in flow in vivo (pulmonary flow most likely)
 	
 - [ ] simulate time-resolved data and kspace filling probabilities
-	- [x] AJB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here) 
+	- [x] ~AJB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
 	- [ ] HB/LM/HH: time domain, vary kspace filling - probability of significant error? (>10%)
 	- [ ] compute error bounds (what are confidence intervals? Monte Carlo simulation)
 	* 20171201 update: ongoing, LM to share progress on server here:
@@ -23,7 +23,7 @@ NOTES/ACTION ITEMS:
 
 ## 20171201 Meeting notes (AJB, HB, HH, LM)
 
-UPDATES/NOTES/ACTION ITEMS
+**UPDATES/NOTES/ACTION ITEMS**
 
 - [ ] Continue lit review (all)... see 2017114 for additional notes
 	* HH (and others) to put papers on server here:
