@@ -25,13 +25,11 @@
 
 - [ ] Continue lit review (all)... see 2017114 for additional notes
 	- [ ] HH (and others) to put papers on server here:
-	
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_literature\
 	  
 - [ ] ongoing efforts from 20171114 action item to simulate probability of significant error
 	- [ ] HB/HH/LM: cycle through different starting points and linearly filling kspace?
-	- [ ] LM/HH/HB: share progress on server here:
-	
+	- [ ] LM/HH/HB: share progress on server here:	
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_progress_20171201\
 	
 - [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (what is acquisition time)?
