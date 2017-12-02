@@ -10,9 +10,9 @@
 	- [ ] @alexbarks: variability in flow in vivo (pulmonary flow most likely)
 	
 - [ ] simulate time-resolved data and kspace filling probabilities
-	- [x] ~AJB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
-	- [ ] HB/LM/HH: time domain, vary kspace filling - probability of significant error? (>10%)
-	- [ ] compute error bounds (what are confidence intervals? Monte Carlo simulation)
+	- [x] ~@alexbarks: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
+	- [x] HB/LM/HH: time domain, vary kspace filling - probability of significant error? (>10%)
+	- [ ] compute error bounds (what are confidence intervals? Monte Carlo simulation?
 	
 - [ ] in vivo realtime measurements (to get a feel for variability)
 	- [ ] AJB/HH: pulmonary/aortic real time measurements in volunteers?
