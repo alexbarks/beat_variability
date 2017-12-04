@@ -32,8 +32,8 @@
 	- [ ] LM/HH/HB: share progress on server here:	
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_progress_20171201\
 	
-- [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (what is acquisition time)?
-		o AJB typical matrix of the acquisition?
+- [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
+	
 	
 ## FUTURE PROJECT IDEAS
 - 20171114, 4D flow, multiple central kspace lines (beat beat) (KC)
