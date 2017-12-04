@@ -23,17 +23,18 @@
 
 **UPDATES/NOTES/ACTION ITEMS**
 
-- [ ] Continue lit review (all)... see 2017114 for additional notes
+- [ ] All: sign up for github account and request to be a collaborator (or have alex invite you)
+- [ ] All: upload your latest code and let's figure out how to delegate tasks
+- [ ] All: Continue lit review... see 2017114 for additional notes
 	- [ ] HH (and others) to put papers on server here:
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_literature\
+
+- [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
 	  
 - [ ] ongoing efforts from 20171114 action item to simulate probability of significant error
 	- [ ] HB/HH/LM: cycle through different starting points and linearly filling kspace?
 	- [ ] LM/HH/HB: share progress on server here:	
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_progress_20171201\
-	
-- [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
-	
 	
 ## FUTURE PROJECT IDEAS
 - 20171114, 4D flow, multiple central kspace lines (beat beat) (KC)
