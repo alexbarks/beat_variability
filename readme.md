@@ -29,10 +29,11 @@
 	- [ ] HH (and others) to put papers on server here:
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_literature\
 
-- [ ] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
+- [x] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
+	* if respiratory-gated, then usually ~4 lines per segment
 	  
 - [ ] ongoing efforts from 20171114 action item to simulate probability of significant error
-	- [ ] HB/HH/LM: cycle through different starting points and linearly filling kspace?
+	- [ ] HB/HH/LM: cycle through different starting points and linearly fill kspace?
 	- [ ] LM/HH/HB: share progress on server here:	
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_progress_20171201\
 	
