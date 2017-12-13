@@ -6,11 +6,11 @@
 **NOTES/ACTION ITEMS:**
 
 - [ ] peform lit review (20171201 update: ongoing)
-	- [ ] @curatv: center kspace issues (start with Markl 2001 and do a forward lit search)
-	- [ ] @alexbarks: variability in flow in vivo (pulmonary flow most likely)
+	- [ ] HH: center kspace issues (start with Markl 2001 and do a forward lit search)
+	- [ ] AB: variability in flow in vivo (pulmonary flow most likely)
 	
 - [ ] simulate time-resolved data and kspace filling probabilities
-	- [x] ~@alexbarks: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
+	- [x] AB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
 	- [x] ~HB/LM/HH: time domain, vary kspace filling - probability of significant error? (>10%)~
 	- [ ] compute error bounds (what are confidence intervals? Monte Carlo simulation?)
 	
@@ -30,7 +30,7 @@
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_literature\
 
 - [x] AJB: is 2D PCMRI typically breathhold or respiratory gated (also what is acquisition time/matrix)?
-	* if respiratory-gated, then usually ~4 lines per segment
+	* if breath-hold (which is typical), then usually ~4 lines per segment to keep it short
 	  
 - [ ] ongoing efforts from 20171114 action item to simulate probability of significant error
 	- [ ] HB/HH/LM: cycle through different starting points and linearly fill kspace?
