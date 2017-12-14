@@ -278,7 +278,10 @@ end
             %% automatically choose flow files in directory "flow"
             
             pathstr = fileparts(dirStrMag);
-            dirStrFlow   = fullfile(pathstr,'flow');
+            dirStrFlow   = fullfile(pathstr,'flow'); % this won't work if folder not renamed to 'flow'
+            if ~isdir(dirStrFlow)
+                dirStrFlow = uigetdir(pwd,'Select ''flow'' Data Directory');
+            end
             [fileNamesFlowMx, ~]  = local_get_filelist(dirStrFlow,extensionStr);
             %% end of: automatically choose flow files in directory "flow"
             
