@@ -10,7 +10,7 @@
 	- [ ] AB: variability in flow in vivo (pulmonary flow most likely)
 	
 - [ ] simulate time-resolved data and kspace filling probabilities
-	- [x] AB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
+	- [x] ~:AB: to send out initial 'feasibility' code (put on SVN?  20171201 update-now on github here)~
 	- [x] ~HB/LM/HH: time domain, vary kspace filling - probability of significant error? (>10%)~
 	- [ ] compute error bounds (what are confidence intervals? Monte Carlo simulation?)
 	
