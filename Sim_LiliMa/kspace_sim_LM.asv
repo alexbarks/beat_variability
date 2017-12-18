@@ -11,9 +11,7 @@ function [OriginalDataStruct, SynthDataStruct] = kspace_sim_LM(slow_factor, numl
 % number of central lines filled with this slow data is determined by
 % 'numlines'.
 
-% Note: Script assumes 2 views per segment. If choosing an anomalous beat
-% frequency, i.e. 1/10, the anomalous beat will be the last heartbeat of
-% that set of heartbeats (i.e. the tenth heartbeat). 
+% Note: Script assumes 2 views per segment 
 
 % Inputs:
 %  slow_factor          - array of numbers for scaling velocity/phase
@@ -34,12 +32,9 @@ function [OriginalDataStruct, SynthDataStruct] = kspace_sim_LM(slow_factor, numl
 %                         
 % Outputs:
 %  OriginalDataStruct          - Struct with Original Data flow and mean
-%                                velocity values.
-%  SynthDataStruct             - Struct with Synthetic Data flow and mean
-%                                velocity values as well as error. First
-%                                struct dimension is slow factor based,
-%                                second is considering the number of
-%                                anomalous beats 
+%                                velocity values 
+%  OriginalDataStruct          - Struct with Synthetic Data flow and mean
+%                                velocity values as well as error. 
 %
 % Dependencies:
 %  - ifftMultiDim.m
@@ -73,7 +68,7 @@ close all
 % DICOM INFO
 
 if ~isempty(numlines) && ~isempty(anomFreq)
-    disp('You can only change EITHER the number of lines or the frequency of anomalous heartbeats. '); 
+    disp('You can only change the number of lines or the frequency of anomalous heartbeats'); 
     return; 
 end
 bitdepth    = 2^12; % dicoms are encoded 12 bit
@@ -213,10 +208,12 @@ else
             phase_slow(mask) = mask_slow(mask);
             
             % compute complex slow data
-            z_slow = mag.*exp(1i*phase_slow); % complex data for slow phase/mag data        
+            z_slow = mag.*exp(1i*phase_slow); % complex data for slow phase/mag data
+            
             
             % perform FFT on complex data (and phase to test if this is the same)
             kspace_z_slow     = fftMultiDim(z_slow);
+            
             
             % make mask for synthetic line changes
             if k == 1  % Use the same mask for all slow factors (changes with number of lines)
@@ -232,10 +229,13 @@ else
                         mask_kChange(j, indStart+1, :,:,:) = 1;
                     else
                         if (2*n/anomFreq(j)-1) < sy
-                            indStart = 2*n/anomFreq(j)-1;
-                            mask_kChange(j, indStart, :,:,:) = 1;
-                            mask_kChange(j, indStart+1, :,:,:) = 1;
+                            ind2 = 2*n/anomFreq(j)-2;
+                        else
+                            ind2 = sy-1;
                         end
+                        indStart = ind2;
+                        mask_kChange(j, indStart, :,:,:) = 1;
+                        mask_kChange(j, indStart+1, :,:,:) = 1;
                     end
                 end
             end
@@ -268,6 +268,92 @@ else
    plotChangeAnomHB(SynthDataStruct, OriginalDataStruct, slow_factor, anomFreq, mask_kChange);
 end
 
+
+
+
+%% Plot data
+
+
+% hfigMasks = figure;
+% hfig1_plot = figure;
+% for k = 1:size(slow_factor,2)
+%     legendNames = cell(size(numlines,2)+1,1);
+%     set(0,'CurrentFigure',hfig1_plot)
+%
+%     for j = 1:size(numlines,2)
+%         if k == 1  % Use the same mask for all slow factors (changes with number of lines)
+%             set(0,'CurrentFigure',hfigMasks)
+%             subplot(ceil(size(numlines,2)/2), 2,j)
+%             imagesc(squeeze(mask_kChange(j,:,:,1))); colormap gray; axis image;
+%             titleStr = ['Mask used for ', num2str(numlines(j)),' lines changed'];
+%             title(titleStr);
+%         end
+%
+%
+%         legendNames{j} = [num2str(numlines(j)),' center lines changed'];
+%         set(0,'CurrentFigure',hfig1_plot)
+%         currentAxis = subplot(ceil(size(slow_factor,2)/2), 2,k);
+%         hold on
+%         plot(SynthDataStruct(k).SlowData(j).flowROI);
+%
+%
+%     end
+%     legendNames{size(numlines,2)+1} = 'Original Data';
+%     plot(OriginalDataStruct.flowROI,'-xk');
+%     title(['Flow Curves for slow factor = ', num2str(slow_factor(k))]);
+%     xlabel('Time point')
+%     ylabel('Flow (cm^3/s)')
+%     legend(legendNames);
+%     hold off
+%     
+%     hfig2 = figure('position',[1 1 1164 1051]);
+%     hfig3 = figure('position',[1 1 1164 1051]);
+%     
+%     for n = 1: nTime
+%         set(0,'CurrentFigure',hfig2)     
+%         subplot(ceil(nTime/3), 3, n);
+%         lineError = arrayfun(@(x) x.meanVelErrorROI(n), SynthDataStruct(k).SlowData);
+%         lineData = arrayfun(@(x) x.meanVelROI(n), SynthDataStruct(k).SlowData);
+%         lineData_original = OriginalDataStruct.meanVelROI(n);
+%         yyaxis right
+%         b = plot(numlines,lineError*100,'-o');
+%         ylabel('% Velocity Error')
+% 
+%         yyaxis left
+%         hold on
+%         p = plot(numlines,lineData,'-x');
+%         o = plot(0, lineData_original, 'xk'); 
+%         ylabel('Mean Velocity (cm/s)')
+%        % p.LineWidth = 2; 
+%         xlabel('Number of  Center Lines Changed')
+%         titleStr = ['Slow Factor = ', num2str(slow_factor(k)), ', Time point ', num2str(n), '/', num2str(nTime)];
+%         title(titleStr);
+%         hold off
+%         
+%         
+%         set(0,'CurrentFigure',hfig3)
+%         subplot(ceil(nTime/3), 3, n);
+%         line1 = arrayfun(@(x) x.flowErrorROI(n), SynthDataStruct(k).SlowData);
+%         line2 = arrayfun(@(x) x.flowROI(n), SynthDataStruct(k).SlowData);
+%         line_original = OriginalDataStruct.flowROI(n); 
+%         yyaxis right % plot flow error on left axis
+%         l1 = plot(numlines,line1*100, 'o');
+%         ylabel('% Flow Error')
+%         %         ylim([0 90]);
+%         yyaxis left %plot flow on right axis 
+%         hold on
+%         l2 = plot(numlines,line2, '-x');
+%         l3 = plot(0, line_original, 'kx'); 
+%         ylabel('Flow (cm^3/s)')
+%         xlabel('Number of  Center Lines Changed')
+%         %         ylim([-0.4 40]);
+%         titleStr = ['Slow Factor = ', num2str(slow_factor(k)), ', Time point ', num2str(n), '/', num2str(nTime)];
+%         title(titleStr);
+%         
+%         
+%         hold off
+%     end
+% end
 
 end
 
@@ -394,7 +480,6 @@ end
                     imagesc(squeeze(mask_kChange(j,:,:,1))); colormap gray; axis image;
                     titleStr = ['Mask used for ', num2str(numlines(j)),' lines changed'];
                     title(titleStr);
-                    rectangle(currentax, 'Position', [1 (sy/2-2) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicating center 6
                 end
 
 
@@ -468,8 +553,7 @@ end
         [sy, sx, nTime] = size(OriginalDataStruct.phase);
         hfigMasks = figure;
         hfig1_plot = figure;
-        axeshandles1 = zeros(1, nTime);
-        axeshandles2 = axeshandles1;
+        axeshandles = zeros(1, size(anomHB,2));
         for k = 1:size(slow_factor,2)
             legendNames = cell(size(anomHB,2)+1,1);
             set(0,'CurrentFigure',hfig1_plot)
@@ -477,17 +561,16 @@ end
             for j = 1:size(anomHB,2)
                 if k == 1  % Use the same mask for all slow factors (changes with number of lines)
                     set(0,'CurrentFigure',hfigMasks)
-                    currentax = subplot(ceil(size(anomHB,2)/2), 2,j);
+                    subplot(ceil(size(anomHB,2)/2), 2,j);
                     imagesc(squeeze(mask_kChange(j,:,:,1))); colormap gray; axis image;
                     titleStr = ['Mask for 1/', num2str(1/anomHB(j)),' anomalous beat frequency'];
                     title(titleStr);
-                    rectangle(currentax, 'Position', [1 (sy/2+3) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicating center 6 
                 end
 
 
                 legendNames{j} = ['Anomalous every ', num2str(1/anomHB(j)),' beats'];
                 set(0,'CurrentFigure',hfig1_plot)
-                subplot(ceil(size(slow_factor,2)/2), 2,k);
+                currentAxis = subplot(ceil(size(slow_factor,2)/2), 2,k);
                 hold on
                 plot(SynthDataStruct(k).SlowData(j).flowROI);
 
@@ -506,12 +589,12 @@ end
 
             for n = 1: nTime
                 set(0,'CurrentFigure',hfig2)
-                axeshandles1(n)=  subplot(ceil(nTime/3), 3, n);
+               axeshandles(n)=  subplot(ceil(nTime/3), 3, n);
                 lineError = arrayfun(@(x) x.meanVelErrorROI(n), SynthDataStruct(k).SlowData);
                 lineData = arrayfun(@(x) x.meanVelROI(n), SynthDataStruct(k).SlowData);
                 lineData_original = OriginalDataStruct.meanVelROI(n);
                 yyaxis right
-                b = plot(ceil(sy/2*anomHB)/sy*100,lineError*100,'-o');
+                b = plot(ceil(sy*anomHB)/sy*100,lineError*100,'-o');
                 ylabel('% Velocity Error')
 
                 yyaxis left
@@ -527,7 +610,7 @@ end
 
 
                 set(0,'CurrentFigure',hfig3)
-                axeshandles2(n) = subplot(ceil(nTime/3), 3, n);
+                subplot(ceil(nTime/3), 3, n);
                 line1 = arrayfun(@(x) x.flowErrorROI(n), SynthDataStruct(k).SlowData);
                 line2 = arrayfun(@(x) x.flowROI(n), SynthDataStruct(k).SlowData);
                 line_original = OriginalDataStruct.flowROI(n);
@@ -544,8 +627,10 @@ end
                 %         ylim([-0.4 40]);
                 titleStr = ['Slow Factor = ', num2str(slow_factor(k)), ', Time point ', num2str(n), '/', num2str(nTime)];
                 title(titleStr);
+
+
                 hold off
             end
-            %set(axeshandles, 'XLim',
+            %set(axeshandles, 'XLim', 
         end
     end
