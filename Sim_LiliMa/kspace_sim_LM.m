@@ -11,7 +11,7 @@ function [OriginalDataStruct, SynthDataStruct] = kspace_sim_LM(slow_factor, numl
 % number of central lines filled with this slow data is determined by
 % 'numlines'.
 
-% Note: Script assumes 2 views per segment. If choosing an anomalous beat
+% IMPT NOTE: Script assumes 2 views per segment. If choosing an anomalous beat
 % frequency, i.e. 1/10, the anomalous beat will be the last heartbeat of
 % that set of heartbeats (i.e. the tenth heartbeat). 
 
@@ -47,18 +47,15 @@ function [OriginalDataStruct, SynthDataStruct] = kspace_sim_LM(slow_factor, numl
 
 % Liliana Ma, Northwestern University 20171205
 
-% Notes:
+% Other notes:
 % - The first figure is scaled weirdly, because changing the subplots to a
 % single figure also changes the eclipse ROI slightly, which I didn't want
 % to do yet for the sake of consistency. The values only change slightly,
 % but need to investigate further because the shape of the error curves
 % changes.
 
-
-
-
-
 % TODO:
+% - Clean up code. Some of it is redundant. 
 % - Make the ROI interactive when we start using other data 
 % - detemine error interval during acquisition, ie what is the chance that
 %   central kspace is filled. What is the 95% confidence interval for any
@@ -273,7 +270,7 @@ end
 
 
 
-    function [magMx, flowMx, venc, voxelVol] = local_sort_filenames
+    function [magMx, flowMx, venc, voxelVol] = local_sort_filenames %taken from velomap_internal.m to load dicoms
         dirStrMag = uigetdir(pwd,'Select ''mag'' Data Directory');
         extensionStr = 'ima';
         [fileNamesMagMx, dirStrMag]  = local_get_filelist(dirStrMag,extensionStr);
@@ -358,7 +355,7 @@ end
         %%% End of: convert fileListStruct to matrix of file names
     end
 
-    function vel_mean = velMean_TimeResolved(dataMx, maskMx, venc)
+    function vel_mean = velMean_TimeResolved(dataMx, maskMx, venc) %calculate mean velocity in an ROI 
         [ny, nx, nTimePts] = size(dataMx); 
         vel_mean = zeros(nTimePts, 1); 
         
@@ -370,7 +367,7 @@ end
     end
     
     
-    function ROI_flow = Flow_TimeResolved(dataMx, maskMx, venc, voxelSize)
+    function ROI_flow = Flow_TimeResolved(dataMx, maskMx, venc, voxelSize) %calculate flow in an ROI
         [ny, nx, nTimePts] = size(dataMx);
         ROI_flow = zeros(nTimePts, 1);
         
@@ -382,7 +379,7 @@ end
         end
     end
     
-    function plotChangeLines(SynthDataStruct, OriginalDataStruct, slow_factor, numlines, mask_kChange)
+    function plotChangeLines(SynthDataStruct, OriginalDataStruct, slow_factor, numlines, mask_kChange) %plot analysis of changing the number of lines with abnormal heartbeat 
         [~, ~, nTime] = size(OriginalDataStruct.phase); 
         hfigMasks = figure;
         hfig1_plot = figure;
@@ -397,7 +394,7 @@ end
                     imagesc(squeeze(mask_kChange(j,:,:,1))); colormap gray; axis image;
                     titleStr = ['Mask used for ', num2str(numlines(j)),' lines changed'];
                     title(titleStr);
-                    rectangle(currentax, 'Position', [1 (sy/2-2) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicating center 6
+                    rectangle(currentax, 'Position', [1 (sy/2-2) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicate center 6 lines of k space 
                 end
 
 
@@ -467,7 +464,7 @@ end
         end
     end
     
-    function plotChangeAnomHB(SynthDataStruct, OriginalDataStruct, slow_factor, anomHB, mask_kChange)
+    function plotChangeAnomHB(SynthDataStruct, OriginalDataStruct, slow_factor, anomHB, mask_kChange) %plot analysis of cycling through a regular or pseudorandom anomalous heartbeat frequency 
         [sy, sx, nTime] = size(OriginalDataStruct.phase);
         hfigMasks = figure;
         hfig1_plot = figure;
@@ -484,7 +481,7 @@ end
                     imagesc(squeeze(mask_kChange(j,:,:,1))); colormap gray; axis image;
                     titleStr = ['Mask for 1/', num2str(1/anomHB(j)),' anomalous beat frequency'];
                     title(titleStr);
-                    rectangle(currentax, 'Position', [1 (sy/2+3) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicating center 6 
+                    rectangle(currentax, 'Position', [1 (sy/2-2) sx 6], 'EdgeColor', 'red'); % overlay rectangle to indicate center 6 lines of matrix 
                 end
 
 
@@ -514,16 +511,16 @@ end
                 lineData = arrayfun(@(x) x.meanVelROI(n), SynthDataStruct(k).SlowData);
                 lineData_original = OriginalDataStruct.meanVelROI(n);
                 yyaxis right
-                b = plot(ceil(sy/2*anomHB)/sy*100,lineError*100,'-o');
+                b = plot(anomHB,lineError*100,'-o');
                 ylabel('% Velocity Error')
 
                 yyaxis left
                 hold on
-                p = plot(ceil(sy/2*anomHB)/sy*100,lineData,'-x');
+                p = plot(anomHB,lineData,'-x');
                 o = plot(0, lineData_original, 'xk');
                 ylabel('Mean Velocity (cm/s)')
                 % p.LineWidth = 2;
-                xlabel('Percent Anomalous Beats (%)')
+                xlabel('Anomalous beat frequency heartbeat^-^1')
                 titleStr = ['Slow Factor = ', num2str(slow_factor(k)), ', Time point ', num2str(n), '/', num2str(nTime)];
                 title(titleStr);
                 hold off
@@ -535,15 +532,15 @@ end
                 line2 = arrayfun(@(x) x.flowROI(n), SynthDataStruct(k).SlowData);
                 line_original = OriginalDataStruct.flowROI(n);
                 yyaxis right % plot flow error on left axis
-                l1 = plot(ceil(sy/2*anomHB)/sy*100,line1*100, 'o');
+                l1 = plot(anomHB,line1*100, 'o');
                 ylabel('% Flow Error')
                 %         ylim([0 90]);
                 yyaxis left %plot flow on right axis
                 hold on
-                l2 = plot(ceil(sy/2*anomHB)/sy*100, line2, '-x');
+                l2 = plot(anomHB, line2, '-x');
                 l3 = plot(0, line_original, 'kx');
                 ylabel('Flow (cm^3/s)')
-                xlabel('Percent Anomalous Beats (%)')
+                xlabel('Anomalous beat frequency heartbeat^-^1')
                 %         ylim([-0.4 40]);
                 titleStr = ['Slow Factor = ', num2str(slow_factor(k)), ', Time point ', num2str(n), '/', num2str(nTime)];
                 title(titleStr);
