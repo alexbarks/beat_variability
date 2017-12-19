@@ -38,13 +38,16 @@
 	  \\10.254.136.37\data_imaging\cv_mri\beat_variability\_progress_20171201\
 
 ## 20171219 Meetings notes
-- [] All: play with each other's code
 
-- [] AJB: marge code into base
+**UPDATES/NOTES/ACTION ITEMS**
 
-- [] All: review literature on server, if we breathhold, does respiratory variation matter?
+- [ ] All: test each other's code
 
-- [] Acquire breath-held and/or free breathing real time flow data (in the new year)
+- [ ] AJB: merge all code features into on base version
+
+- [ ] All: review literature on server, if we breathhold, does respiratory variation matter?
+
+- [ ] Acquire breath-held and/or free breathing real time flow data (in the new year)
 
 
 
